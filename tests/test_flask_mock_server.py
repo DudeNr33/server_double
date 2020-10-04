@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 """Tests for `flask_mock_server` package."""
+import time
 
 import pytest
 import requests
@@ -15,6 +16,7 @@ from flask_mock_server.flask_mock_server import MockServer
 def mock_server():
     server = MockServer()
     server.start()
+    time.sleep(2)
     yield server
     server.shutdown_server()
 

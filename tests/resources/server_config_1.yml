@@ -1,0 +1,12 @@
+port: 8083
+endpoints:
+    /test/endpoint200:
+        methods:
+            - GET
+        status: 200
+        response: "{'hello': 'world'}"
+    /test/endpoint404:
+        methods:
+            - GET
+            - POST
+        status: 404

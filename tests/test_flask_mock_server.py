@@ -12,7 +12,7 @@ from flask_mock_server import cli
 from flask_mock_server.flask_mock_server import MockServer
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def mock_server():
     server = MockServer()
     server.start()

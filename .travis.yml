@@ -6,6 +6,19 @@ python:
   - 3.7
   - 3.6
   - 3.5
+env: TESTS=tests/unittest
+
+stages:
+    - static analysis
+    - test
+    - integration test
+
+jobs:
+    include:
+        - stage: static analysis
+          script: tox -e flake8
+        - stage: integration test
+          env: TESTS=tests/integrationtest
 
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install -U tox-travis

@@ -1,10 +1,4 @@
-#!/usr/bin/env python
-
-"""Tests for `flask_mock_server` package."""
-import time
-
 import pytest
-import requests
 
 from click.testing import CliRunner
 
@@ -12,38 +6,40 @@ from flask_mock_server import cli
 from flask_mock_server.flask_mock_server import MockServer
 
 
-@pytest.fixture(scope="module")
-def mock_server():
-    server = MockServer()
-    server.start()
-    time.sleep(2)
-    yield server
-    server.shutdown_server()
+@pytest.fixture
+def server():
+    return MockServer()
 
 
-def test_json_response(mock_server):
+@pytest.fixture
+def client(server):
+    app = server.app
+    yield app.test_client()
+
+
+def test_add_json_response(server, client):
     uri = "/json"
     expected_response = ["hello", "world"]
-    mock_server.add_json_response(
+    server.add_json_response(
         url=uri,
         serializable=expected_response
     )
 
-    actual_response = requests.get(mock_server.url + uri).json()
+    actual_response = client.get(server.url + uri).json
 
     assert actual_response == expected_response
 
 
-def test_callback_response(mock_server):
+def test_add_callback_response(server, client):
     uri = "/callback"
-    expected_response = "Hello World!"
+    expected_response = b"Hello World!"
 
     def callback():
         return expected_response
 
-    mock_server.add_callback_response(uri, callback)
+    server.add_callback_response(uri, callback)
 
-    actual_response = requests.get(mock_server.url + uri).text
+    actual_response = client.get(server.url + uri).data
 
     assert actual_response == expected_response
 

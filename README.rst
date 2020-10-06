@@ -9,8 +9,8 @@ Server Double
 .. image:: https://img.shields.io/travis/dudenr33/server_double.svg
         :target: https://travis-ci.com/dudenr33/server_double
 
-.. image:: https://readthedocs.org/projects/flask-mock-server/badge/?version=latest
-        :target: https://flask-mock-server.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/server-double/badge/?version=latest
+        :target: https://server-double.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
 
@@ -20,7 +20,7 @@ HTTP Server to mock a real server for integration testing - built upon Flask.
 
 
 * Free software: MIT license
-* Documentation: https://flask-mock-server.readthedocs.io.
+* Documentation: https://server-double.readthedocs.io.
 
 
 Features

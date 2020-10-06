@@ -38,5 +38,5 @@ deploy:
     secure: PLEASE_REPLACE_ME
   on:
     tags: true
-    repo: dudenr33/flask_mock_server
+    repo: dudenr33/server_double
     python: 3.8

@@ -2,6 +2,6 @@
 Usage
 =====
 
-To use Flask Mock Server in a project::
+To use Server Double in a project::
 
-    import flask_mock_server
+    import server_double

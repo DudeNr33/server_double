@@ -1,4 +1,4 @@
-"""Top-level package for Flask Mock Server."""
+"""Top-level package for Server Double."""
 
 __author__ = """Andreas Finkler"""
 __email__ = 'andi.finkler@gmail.com'

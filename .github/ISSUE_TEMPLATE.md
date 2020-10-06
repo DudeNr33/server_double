@@ -1,4 +1,4 @@
-* Flask Mock Server version:
+* Server Double version:
 * Python version:
 * Operating System:
 

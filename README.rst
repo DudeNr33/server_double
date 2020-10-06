@@ -1,13 +1,13 @@
 =================
-Flask Mock Server
+Server Double
 =================
 
 
-.. image:: https://img.shields.io/pypi/v/flask_mock_server.svg
-        :target: https://pypi.python.org/pypi/flask_mock_server
+.. image:: https://img.shields.io/pypi/v/server_double.svg
+        :target: https://pypi.python.org/pypi/server_double
 
-.. image:: https://img.shields.io/travis/dudenr33/flask_mock_server.svg
-        :target: https://travis-ci.com/dudenr33/flask_mock_server
+.. image:: https://img.shields.io/travis/dudenr33/server_double.svg
+        :target: https://travis-ci.com/dudenr33/server_double
 
 .. image:: https://readthedocs.org/projects/flask-mock-server/badge/?version=latest
         :target: https://flask-mock-server.readthedocs.io/en/latest/?badge=latest

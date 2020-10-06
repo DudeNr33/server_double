@@ -1,4 +1,4 @@
-Welcome to Flask Mock Server's documentation!
+Welcome to Server Double's documentation!
 ======================================
 
 .. toctree::

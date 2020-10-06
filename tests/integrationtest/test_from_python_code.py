@@ -3,7 +3,7 @@ import time
 import pytest
 import requests
 
-from flask_mock_server.server import MockServer
+from server_double.server import MockServer
 
 
 @pytest.fixture(scope="module")

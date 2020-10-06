@@ -9,7 +9,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=.
 set BUILDDIR=_build
-set SPHINXPROJ=flask_mock_server
+set SPHINXPROJ=server_double
 
 if "%1" == "" goto help
 

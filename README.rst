@@ -26,7 +26,12 @@ HTTP Server to mock a real server for integration testing - built upon Flask.
 Features
 --------
 
-* TODO
+* Test double for a real server in integration tests
+* Configurable
+
+  * dynamically from within a Python script
+  * with a YAML file
+
 
 Credits
 -------

@@ -7,7 +7,7 @@ Server Double
         :target: https://pypi.python.org/pypi/server_double
 
 .. image:: https://img.shields.io/travis/dudenr33/server_double.svg
-        :target: https://travis-ci.com/dudenr33/server_double
+        :target: https://img.shields.io/travis/com/DudeNr33/server_double/main
 
 .. image:: https://readthedocs.org/projects/server-double/badge/?version=latest
         :target: https://server-double.readthedocs.io/en/latest/?badge=latest

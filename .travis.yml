@@ -16,7 +16,7 @@ stages:
 jobs:
     include:
         - stage: static analysis
-          script: tox -e flake8
+          script: tox -e pylint
         - stage: integration test
           env: TESTS=tests/integrationtest
 

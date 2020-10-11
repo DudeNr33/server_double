@@ -5,7 +5,7 @@ from server_double.server import MockServer
 
 def test_port():
     server = MockServer(
-        config={
+        endpoint_config={
             "port": 8083
         }
     )
@@ -22,7 +22,7 @@ def test_port():
 )
 def test_single_endpoint_get(endpoint_config):
     server = MockServer(
-        config={
+        endpoint_config={
             "endpoints": endpoint_config
         }
     )

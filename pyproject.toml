@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "server_double"
+version = "0.1.0"
+description = "HTTP Server to mock a real server for integration testing - built upon Flask."
+authors = ["Andreas Finkler"]
+license = "MIT license"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+click = "^7.0"
+requests = "^2.26.0"
+Flask = "^2.0.1"
+PyYAML = "^5.4.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.4"
+pylint = "^2.9.5"
+black = "^21.7b0"
+Sphinx = "^4.1.1"
+rstcheck = "^3.3.1"
+tox = "^3.24.0"
+tox-poetry = "^0.4.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

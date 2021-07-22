@@ -29,32 +29,34 @@ class MockServer(Thread):
                 url=uri,
                 content=config.get("content", b""),
                 methods=config.get("methods", ("GET",)),
-                status_code=config.get("status_code", 200)
+                status_code=config.get("status_code", 200),
             )
 
     @staticmethod
     def _shutdown_server():
         """Issue shutdown signal to the flask application."""
-        if 'werkzeug.server.shutdown' not in request.environ:
-            raise RuntimeError('Not running the development server')
-        request.environ['werkzeug.server.shutdown']()
-        return 'Server shutting down...'
+        if "werkzeug.server.shutdown" not in request.environ:
+            raise RuntimeError("Not running the development server")
+        request.environ["werkzeug.server.shutdown"]()
+        return "Server shutting down..."
 
     def shutdown_server(self):
         """Shuts the server down and joins the thread."""
         requests.get("http://localhost:%s/shutdown" % self.port)
         self.join()
 
-    def add_callback_response(self, url, callback, methods=('GET',)):
+    def add_callback_response(self, url, callback, methods=("GET",)):
         """
         Create a new endpoint which returns the value produced by the callback function.
         The callback function must return something which can be interpreted by Flask,
         i.e. either a string, or a tuple consisting of a string and an integer (for the http status code).
         """
-        callback.__name__ = str(uuid4())  # change name of method to mitigate flask exception
+        callback.__name__ = str(
+            uuid4()
+        )  # change name of method to mitigate flask exception
         self.app.add_url_rule(url, view_func=callback, methods=methods)
 
-    def add_json_response(self, url, serializable, methods=('GET',), status_code=200):
+    def add_json_response(self, url, serializable, methods=("GET",), status_code=200):
         """
         Create a new endpoint which returns a fixed value as json with the specified status_code.
         """
@@ -64,7 +66,7 @@ class MockServer(Thread):
 
         self.add_callback_response(url, callback, methods=methods)
 
-    def add_raw_response(self, url, content, methods=('GET',), status_code=200):
+    def add_raw_response(self, url, content, methods=("GET",), status_code=200):
         """
         Create a new endpoint which returns fixed raw content with the specified status code.
         """

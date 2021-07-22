@@ -14,6 +14,7 @@ class ServerDoubleShell(cmd.Cmd):
     Interactive shell for Server Double.
     Features a command loop to let you start/stop the server and configure/alter the endpoints.
     """
+
     intro = "You are now in an interactive shell. Use the 'start' command to start your server double!"
     prompt = "(server double) "
 

@@ -1,5 +1,5 @@
 Welcome to Server Double's documentation!
-======================================
+=========================================
 
 .. toctree::
    :maxdepth: 2

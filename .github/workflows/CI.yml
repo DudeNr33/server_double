@@ -1,7 +1,7 @@
 # This workflow will install Python dependencies, run tests and lint with a variety of Python versions
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: Python package
+name: Continuous Integration
 
 on:
   push:
@@ -24,8 +24,10 @@ jobs:
           poetry-version: 1.1.6
       - name: Install dependencies
         run: poetry install
-      - name: Run Pylint
-        run: poetry run --rcfile=tox.ini pylint ./src
+      - name: Install tox and plugins
+        run: pip install tox tox-poetry
+      - name: Run linting through tox
+        run: tox -e lint
 
   unittest:
 

@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: poetry install
       - name: Run Pylint
-        run: poetry run pylint ./src
+        run: poetry run --rcfile=tox.ini pylint ./src
 
   unittest:
 
@@ -40,7 +40,11 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python }}
-      - name: Install Tox
+      - name: Setup Poetry
+        uses: abatilo/actions-poetry@v2.0.0
+        with:
+          poetry-version: 1.1.6
+      - name: Install tox and plugins
         run: pip install tox tox-poetry
       - name: Run unit tests through tox
         env:
@@ -62,7 +66,11 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python }}
-      - name: Install Tox
+      - name: Setup Poetry
+        uses: abatilo/actions-poetry@v2.0.0
+        with:
+          poetry-version: 1.1.6
+      - name: Install tox and plugins
         run: pip install tox tox-poetry
       - name: Run integration tests through tox
         env:

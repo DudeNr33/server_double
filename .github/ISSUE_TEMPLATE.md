@@ -1,4 +1,4 @@
-* Server Double version:
+* server-double version:
 * Python version:
 * Operating System:
 

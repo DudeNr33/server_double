@@ -10,7 +10,24 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Setup Poetry
+        uses: abatilo/actions-poetry@v2.0.0
+        with:
+          poetry-version: 1.1.6
+      - name: Install dependencies
+        run: poetry install
+      - name: Run Pylint
+        run: poetry run pylint ./src
+
+  unittest:
 
     runs-on: ubuntu-latest
     strategy:
@@ -24,7 +41,30 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - name: Install Tox
-        run: pip install tox
-      - name: Run Tox
-        # Run tox using the version of Python in `PATH`
+        run: pip install tox tox-poetry
+      - name: Run unit tests through tox
+        env:
+          TESTS: tests/unittest
+        run: tox -e py
+
+
+  integrationtest:
+
+    runs-on: ubuntu-latest
+    needs: unittest
+    strategy:
+      matrix:
+        python: [3.7, 3.8, 3.9]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install Tox
+        run: pip install tox tox-poetry
+      - name: Run integration tests through tox
+        env:
+          TESTS: tests/integrationtest
         run: tox -e py

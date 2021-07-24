@@ -15,7 +15,7 @@ class Endpoint:
 
     @cherrypy.expose
     def index(self):
-        return f"Endpoint {self.url}"
+        return ""
 
 
 class MockServer:

@@ -1,8 +1,7 @@
-import requests
 import pytest
+import requests
 
 from server_double.server import MockServer
-
 
 SERVER = "http://localhost:8080"
 
@@ -59,6 +58,7 @@ class TestStartStop:
 
 class TestEndpointConfiguration:
     """Tests concerning adding, editing, and removing endpoints."""
+
     ADD_ENDPOINT_URL = SERVER + "/__mock/add_endpoint"
 
     @pytest.fixture(autouse=True)
@@ -66,8 +66,9 @@ class TestEndpointConfiguration:
         self.server = started_server
         yield
 
-    def test_add_new_endpoint(self):
+    def test_add_default_values(self):
         test_url = "/my/test/endpoint"
         self.server.add_endpoint(test_url)
         response = requests.get(SERVER + test_url)
         assert response.status_code == 200
+        assert response.text == ""

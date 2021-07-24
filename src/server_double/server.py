@@ -22,6 +22,9 @@ class MockServer:
     def __init__(self, config=None):
         self.config = config or {}
         self.port = self.config.get("port", 8080)
+        endpoints = self.config.get("endpoints", {})
+        for endpoint, config in endpoints.items():
+            self.add_endpoint(endpoint, **config)
         self.status = ServerStatus.STOPPED
 
     def start(self):
@@ -40,5 +43,5 @@ class MockServer:
         return str(cherrypy.tree.apps)
 
     @cherrypy.expose
-    def add_endpoint(self, url, status=200):
-        cherrypy.tree.mount(Endpoint(url=url, default_status=status), url)
+    def add_endpoint(self, url, status_code=200):
+        cherrypy.tree.mount(Endpoint(url=url, default_status=status_code), url)

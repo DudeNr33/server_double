@@ -1,37 +1,31 @@
+"""
+Unittests checking the initialization of the ``MockServer`` class and evaluation of the config passed to it.
+"""
+from unittest.mock import patch
+
 import pytest
 
-from server_double.server import MockServer
+from server_double.server import Endpoint, MockServer
 
 
 def test_port():
-    server = MockServer(
-        config_port = 8080,
-        mock_port = 8083,
-        endpoint_config={}
-    )
+    server = MockServer(config={"port": 8083})
     assert server.port == 8083
 
 
 @pytest.mark.parametrize(
-    "endpoint_config",
+    "url,config",
     [
-        {"/endpoint": {"status_code": 200}},
-        {"/endpoint": {"status_code": 204}},
-        {"/endpoint": {"status_code": 303}},
-    ]
+        ("/endpoint", {"status_code": 200}),
+        ("/resource", {"status_code": 204}),
+        ("/foobar", {"status_code": 303}),
+    ],
 )
-def test_single_endpoint_get(endpoint_config):
-    server = MockServer(
-        endpoint_config={
-            "endpoints": endpoint_config
-        }
-    )
-    server.app.config["TESTING"] = True
-    test_client = server.app.test_client()
-    expected_status = endpoint_config["/endpoint"].get("status_code", 200)
-    expected_content = endpoint_config["/endpoint"].get("content", b"")
-
-    response = test_client.get(server.url + "/endpoint")
-
-    assert response.status_code == expected_status
-    assert response.data == expected_content
+def test_single_endpoint(url, config):
+    with patch("server_double.server.cherrypy") as cherrypy_mock:
+        _ = MockServer(config={"endpoints": {url: config}})
+    root, script_path = cherrypy_mock.tree.mount.call_args.args
+    assert script_path == url
+    assert isinstance(root, Endpoint)
+    assert root.url == url
+    assert root.default_status == config["status_code"]

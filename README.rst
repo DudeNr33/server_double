@@ -16,7 +16,7 @@ Server Double
 
 
 
-HTTP Server to mock a real server for integration testing - built upon Flask.
+HTTP Server to mock a real server for integration testing - built upon CherryPy.
 
 
 * Free software: MIT license
@@ -38,8 +38,6 @@ Credits
 
 This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
 
-The code was inspired by this gist_ from eruvanos
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
-.. _gist: https://gist.github.com/eruvanos/f6f62edb368a20aaa880e12976620db8

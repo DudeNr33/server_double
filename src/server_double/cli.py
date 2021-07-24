@@ -28,11 +28,11 @@ class ServerDoubleShell(cmd.Cmd):
         self.server = MockServer(self.config)
         self.server.start()
         time.sleep(2)
-        print("Server double started at {}".format(self.server.url))
+        print("Server double started")
 
     def do_stop(self, arg):  # pylint: disable=unused-argument
         """Stop the server (if already running)."""
-        self.server.shutdown_server()
+        self.server.stop()
         self.server = None
 
     def do_quit(self, arg):  # pylint: disable=unused-argument

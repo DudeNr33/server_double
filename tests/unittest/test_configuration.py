@@ -5,9 +5,9 @@ from server_double.server import MockServer
 
 def test_port():
     server = MockServer(
-        endpoint_config={
-            "port": 8083
-        }
+        config_port = 8080,
+        mock_port = 8083,
+        endpoint_config={}
     )
     assert server.port == 8083
 

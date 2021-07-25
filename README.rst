@@ -6,8 +6,8 @@ Server Double
 .. image:: https://img.shields.io/pypi/v/server_double.svg
         :target: https://pypi.python.org/pypi/server_double
 
-.. image:: https://img.shields.io/travis/dudenr33/server_double.svg
-        :target: https://img.shields.io/travis/com/DudeNr33/server_double/main
+.. image:: https://github.com/DudeNr33/server_double/actions/workflows/CI.yml/badge.svg?branch=main
+        :target: https://github.com/DudeNr33/server_double/actions/workflows/CI.yml
 
 .. image:: https://readthedocs.org/projects/server-double/badge/?version=latest
         :target: https://server-double.readthedocs.io/en/latest/?badge=latest

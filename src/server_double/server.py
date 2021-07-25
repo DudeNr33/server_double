@@ -1,85 +1,66 @@
 """
-Credit goes to https://gist.github.com/eruvanos/f6f62edb368a20aaa880e12976620db8 from which the basic idea is taken.
+Logic for creating and managing the mock server.
 """
 
-from threading import Thread
-from uuid import uuid4
+from enum import Enum
 
-import requests
-from flask import Flask, jsonify, request
+import cherrypy
 
 
-class MockServer(Thread):
+class ServerStatus(Enum):
+    """Current status of the server instance."""
+    STARTED = "started"
+    STOPPED = "stopped"
+
+
+class Endpoint:
+    """Represents a single endpoint that was added to the ``MockServer``."""
+
+    def __init__(self, url, default_status, default_response=""):
+        self.url = url
+        self.default_status = default_status
+        self.default_response = default_response
+
+    @cherrypy.expose
+    def index(self):
+        """The index page returns the content that was specified when the endpoint was added or edited."""
+        return self.default_response
+
+
+class MockServer:
     """
-    Main class for the Server Double.
-    Holds a reference to the Flask application and runs it in the background.
+    A ``MockServer`` handles the creation and lifecycle management of the underlying ``CherryPy`` server,
+    as well as acting as an URL itself and providing endpoints to add, edit and remove andpoints.
+    The underlying methods can be called from Python code directly, too.
     """
 
-    def __init__(self, endpoint_config=None):
-        super().__init__()
-        endpoint_config = endpoint_config or {}
-        self.port = endpoint_config.get("port", 5000)
-        self.app = Flask(__name__)
-        self.url = "http://localhost:%s" % self.port
+    def __init__(self, config=None):
+        self.config = config or {}
+        self.port = self.config.get("port", 8080)
+        endpoints = self.config.get("endpoints", {})
+        for endpoint, ep_config in endpoints.items():
+            self.add_endpoint(endpoint, **ep_config)
+        self.status = ServerStatus.STOPPED
 
-        self.app.add_url_rule("/shutdown", view_func=self._shutdown_server)
+    def start(self):
+        """Start the ``CherryPy`` server with all endpoints given via the config or added through code."""
+        if self.status is ServerStatus.STARTED:
+            raise RuntimeError("Mock server already started, cannot start twice.")
+        self.status = ServerStatus.STARTED
+        cherrypy.tree.mount(self, "/__mock", {"/": {"port": self.port}})
+        cherrypy.engine.start()
 
-        for uri, config in endpoint_config.get("endpoints", {}).items():
-            self.add_raw_response(
-                url=uri,
-                content=config.get("content", b""),
-                methods=config.get("methods", ("GET",)),
-                status_code=config.get("status_code", 200),
-            )
+    def stop(self):
+        """Stop and exit the ``CherryPy`` server."""
+        cherrypy.engine.exit()
+        self.status = ServerStatus.STOPPED
 
-    @staticmethod
-    def _shutdown_server():
-        """Issue shutdown signal to the flask application."""
-        if "werkzeug.server.shutdown" not in request.environ:
-            raise RuntimeError("Not running the development server")
-        request.environ["werkzeug.server.shutdown"]()
-        return "Server shutting down..."
+    @cherrypy.expose
+    def info(self):  # pylint: disable=no-self-use
+        """Returns information of all currently configured endpoints."""
+        return str(cherrypy.tree.apps)
 
-    def shutdown_server(self):
-        """Shuts the server down and joins the thread."""
-        requests.get("http://localhost:%s/shutdown" % self.port)
-        self.join()
-
-    def add_callback_response(self, url, callback, methods=("GET",)):
-        """
-        Create a new endpoint which returns the value produced by the callback function.
-        The callback function must return something which can be interpreted by Flask,
-        i.e. either a string, or a tuple consisting of a string and an integer (for the http status code).
-        """
-        callback.__name__ = str(
-            uuid4()
-        )  # change name of method to mitigate flask exception
-        self.app.add_url_rule(url, view_func=callback, methods=methods)
-
-    def add_json_response(self, url, serializable, methods=("GET",), status_code=200):
-        """
-        Create a new endpoint which returns a fixed value as json with the specified status_code.
-        """
-
-        def callback():
-            return jsonify(serializable), status_code
-
-        self.add_callback_response(url, callback, methods=methods)
-
-    def add_raw_response(self, url, content, methods=("GET",), status_code=200):
-        """
-        Create a new endpoint which returns fixed raw content with the specified status code.
-        """
-
-        def callback():
-            return content, status_code
-
-        self.add_callback_response(url, callback, methods)
-
-    def run(self):
-        """
-        Overwrite of the run method of class Thread. This starts the server.
-        This method gets called when executing the start() method of this - just as for normal Thread instances in
-        Python, so use MockServer().start() to actually start it.
-        """
-        self.app.run(port=self.port)
+    @cherrypy.expose
+    def add_endpoint(self, url, status_code=200):  # pylint: disable=no-self-use
+        """Add a new endpoint at a given URL."""
+        cherrypy.tree.mount(Endpoint(url=url, default_status=status_code), url)

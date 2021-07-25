@@ -24,7 +24,7 @@ def test_port():
 def test_single_endpoint(url, config):
     with patch("server_double.server.cherrypy") as cherrypy_mock:
         _ = MockServer(config={"endpoints": {url: config}})
-    root, script_path = cherrypy_mock.tree.mount.call_args.args
+    root, script_path = cherrypy_mock.tree.mount.call_args[0]
     assert script_path == url
     assert isinstance(root, Endpoint)
     assert root.url == url
